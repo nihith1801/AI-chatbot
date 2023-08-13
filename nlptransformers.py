@@ -6,7 +6,7 @@ import os
 import speech_recognition as sr
 
 # Set your OpenAI API key
-openai.api_key = "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"
+openai.api_key = "Open Ai key"
 
 def text_to_speech(text, lang='en'):
     tts = gTTS(text=text, lang=lang, slow=False)
@@ -29,7 +29,7 @@ def main():
         return
 
     messages = []
-    system_msg = "You are a short tempered girl assistant."  # Set the tsundere personality
+    system_msg = "Random personality"
     messages.append({"role": "system", "content": system_msg})
 
     print("Your assistant is ready!")
