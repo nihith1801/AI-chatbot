@@ -1,21 +1,28 @@
 import openai
-from gtts import gTTS
-import playsound
+import requests
+import json
 import tempfile
 import os
 import speech_recognition as sr
+from elevenlabs import clone, generate, play, set_api_key
 
 # Set your OpenAI API key
-openai.api_key = "Open Ai key"
+openai.api_key = "open.api.key"
+
+# Set your ElevenLabs API key
+elevenlabs_api_key = "Eleven labs api key"
+set_api_key(elevenlabs_api_key)
 
 def text_to_speech(text, lang='en'):
-    tts = gTTS(text=text, lang=lang, slow=False)
-    with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as temp_audio_file:
-        temp_audio_filename = temp_audio_file.name
-        tts.save(temp_audio_filename)
+    # Generate audio using ElevenLabs API
+    audio = generate(
+        text=text,
+        voice="Charolette",
+        model="eleven_monolingual_v1"
+    )
 
-    playsound.playsound(temp_audio_filename, True)
-    os.remove(temp_audio_filename)
+    # Play the generated audio
+    play(audio)
 
 def main():
     input_mode = input("Choose input mode:\n1. Text\n2. Voice\n")
@@ -29,10 +36,10 @@ def main():
         return
 
     messages = []
-    system_msg = "Random personality"
+    system_msg = "Personality"
     messages.append({"role": "system", "content": system_msg})
 
-    print("Your assistant is ready!")
+    print("Your tsundere assistant is ready!")
 
     while True:
         if input_mode == "1":
@@ -69,7 +76,7 @@ def main():
         messages.append({"role": "assistant", "content": assistant_reply})
 
         print("\nAssistant:", assistant_reply)
-        text_to_speech(assistant_reply, lang='en')  # Use Jp accent for speech
+        text_to_speech(assistant_reply, lang='en')  # Use English accent for speech
 
 if __name__ == "__main__":
     main()
